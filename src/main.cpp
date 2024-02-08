@@ -82,22 +82,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// if (isQuals) {
-		matchQualsThreeBallAuto();
-	// }
-	// else if (isElims) {
-	// 	matchElimsAuto();
-	// };[
 
-
-
-	
-	// else if (isSkills) {
-	// 	skillsAuto();
-	// }
-	// else {
-	// 	// D:
-	// }
 }
 
 /**
