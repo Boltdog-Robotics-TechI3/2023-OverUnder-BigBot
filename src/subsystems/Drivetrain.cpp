@@ -1,6 +1,52 @@
 #include "main.h"
 #include <iostream>
 using namespace std;
+#include "lemlib/api.hpp"
+
+lemlib::TrackingWheel horizontalTW(&rotationSensor, 2.75, 0.0, 2);
+
+// lemlib's drivetrain object
+lemlib::Drivetrain_t drivetrain {
+    &leftDrive, // left drivetrain motors
+    &rightDrive, // right drivetrain motors
+    11.5, // track width
+    4.125, // wheel diameter
+    200 // wheel rpm
+};
+
+lemlib::OdomSensors_t odometry {
+    nullptr,
+    nullptr,
+    nullptr, //&horizontalTW, 
+    nullptr, 
+    &gyro // inertial sensor
+};
+
+// forward/backward PID
+lemlib::ChassisController_t lateralController {
+    16, // kP
+    0, // kD
+    1, // smallErrorRange
+    100, // smallErrorTimeout
+    3, // largeErrorRange
+    5000, // largeErrorTimeout
+    5 // slew rate
+};
+ 
+// turning PID
+lemlib::ChassisController_t angularController {
+    4, // kP
+    40, // kD
+    1, // smallErrorRange
+    100, // smallErrorTimeout
+    3, // largeErrorRange
+    5000, // largeErrorTimeout
+    0 // slew rate
+};
+
+// create the chassis
+lemlib::Chassis chassis(drivetrain, lateralController, angularController, odometry);
+
 
 void drivetrainInitialize() {
     fLDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
@@ -9,6 +55,8 @@ void drivetrainInitialize() {
     fRDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
     mRDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
     bRDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
+    // gyro.reset();
+    // chassis.calibrate();
 }
 
 void drivetrainPeriodic(bool override) {
@@ -50,6 +98,13 @@ void drivetrainPeriodic(bool override) {
     // pros::lcd::set_text(0, "Drivetrain Left Encoder: " + to_string(fLDrive.get_position()));
     pros::lcd::set_text(6, "Drivetrain Right Encoder: " + to_string(fRDrive.get_position()));
 
+        lemlib::Pose pose = chassis.getPose(); // get the current position of the robot
+        pros::lcd::print(0, "x: %f", pose.x); // print the x position
+        pros::lcd::print(1, "y: %f", pose.y); // print the y position
+        pros::lcd::print(2, "heading: %f", pose.theta); // print the heading
+        pros::delay(10);
+
+
 
     //arcade drive 
 
@@ -69,8 +124,8 @@ void tankDrive(int left, int right) {
 //good
 void arcadeDrive(int moveValue, int rotateValue) {
     //mixes the numbers
-    int leftMotorSpeed = moveValue - rotateValue;
-    int rightMotorSpeed = moveValue + rotateValue;
+    int leftMotorSpeed = moveValue + rotateValue;
+    int rightMotorSpeed = moveValue - rotateValue;
     //determines which is higher
     int mx = max(abs(leftMotorSpeed), abs(rightMotorSpeed));
     //scales both sides evenly based on if max > 127
@@ -188,6 +243,11 @@ void killSwitch() {
 	climb.brake();
 }
 
+void moveTo(double xDist, double yDist, int timeout) {
+    double y = chassis.getPose().y + yDist;
+    double x = chassis.getPose().x + xDist;
+    chassis.moveTo(x, y, timeout);
+}
 
 
 

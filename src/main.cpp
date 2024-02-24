@@ -82,7 +82,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-
+	moveTo(0, 10, 100000);
 }
 
 /**
@@ -106,10 +106,14 @@ void opcontrol() {
 				override = !override;
 			}
 		
-			drivetrainPeriodic(override);
-			wingsPeriodic(override);
-			climberPeriodic(override);
-			kickerPeriodic(override);
+		drivetrainPeriodic(override);
+			// wingsPeriodic(override);
+			// climberPeriodic(override);
+			// kickerPeriodic(override);
+
+		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
+			autonomous();
+		}
 
 		
 

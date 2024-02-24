@@ -19,3 +19,5 @@ void rotateToHeading(int angle, int speed);
 void rotateToHeadingVoltage(int angle);
 
 void killSwitch();
+
+void moveTo(double xDist, double yDist, int timeout);

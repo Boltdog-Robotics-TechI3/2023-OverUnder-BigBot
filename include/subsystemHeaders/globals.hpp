@@ -38,6 +38,8 @@ MOTORS
         extern pros::ADIDigitalIn rightBumpSwitch;
         extern pros::ADIDigitalIn leftBumpSwitch;
 
+        extern pros::IMU gyro;
+
 
     //Shooter
         extern pros::Motor kickerMotor;
@@ -53,3 +55,5 @@ MOTORS
         extern pros::Motor_Group climb;
 
         extern pros::Motor climbLock;
+
+        extern pros::Rotation rotationSensor;

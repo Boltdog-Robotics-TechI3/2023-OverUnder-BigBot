@@ -30,20 +30,18 @@ MOTORS
 */
         //TODO: figure out gears
 //Drivetrain
-    pros::Motor fRDrive(1, pros::E_MOTOR_GEAR_BLUE, false, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor mRDrive(2, pros::E_MOTOR_GEAR_BLUE, false, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor bRDrive(3, pros::E_MOTOR_GEAR_BLUE, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor fRDrive(6, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor mRDrive(8, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor bRDrive(10, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
 
-    pros::Motor fLDrive(11, pros::E_MOTOR_GEAR_BLUE, true, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor mLDrive(12, pros::E_MOTOR_GEAR_BLUE, true, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor bLDrive(13, pros::E_MOTOR_GEAR_BLUE, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor fLDrive(5, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor mLDrive(3, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor bLDrive(1, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
 
     pros::Motor_Group leftDrive({fLDrive, mLDrive, bLDrive});
     pros::Motor_Group rightDrive({fRDrive, mRDrive, bRDrive});
 
-    pros::ADIDigitalIn leftBumpSwitch('a');
-    pros::ADIDigitalIn rightBumpSwitch('b');
-    
+    pros::IMU gyro(8);
 //Shooter
     pros::Motor kickerMotor(8, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
 
@@ -58,3 +56,6 @@ MOTORS
     pros::Motor_Group climb({leftClimbMotor, rightClimbMotor});
 
     pros::Motor climbLock(18, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+
+    pros::Rotation rotationSensor(9, false);
+
