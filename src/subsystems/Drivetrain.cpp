@@ -9,7 +9,7 @@ lemlib::TrackingWheel horizontalTW(&rotationSensor, 2.75, 0.0, 2);
 lemlib::Drivetrain_t drivetrain {
     &leftDrive, // left drivetrain motors
     &rightDrive, // right drivetrain motors
-    11.5, // track width
+    15.125, // track width
     4.125, // wheel diameter
     200 // wheel rpm
 };
@@ -56,13 +56,12 @@ void drivetrainInitialize() {
     mRDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
     bRDrive.set_brake_mode(MOTOR_BRAKE_BRAKE);
     // gyro.reset();
-    // chassis.calibrate();
+    chassis.calibrate();
 }
 
 void drivetrainPeriodic(bool override) {
     int y1 = 0;
     int x2 = 0;
-
 
     //add a dead zone
     // if(abs(y1) < 10) 
@@ -77,21 +76,21 @@ void drivetrainPeriodic(bool override) {
             x2 = coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
         }
         else{
-            y1 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .6);
-            x2 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) * .6);
+            y1 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
+            x2 = (coachController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y));
         }
         tankDrive(x2, y1);
     }
     else {
-        if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-            //get joysticks for arcade
-            y1 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-            x2 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
-        }
-        else{
-            y1 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y) * .6);
-            x2 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X) * .6);
-        }
+        // if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+        //     //get joysticks for arcade
+        //     y1 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        //     x2 = driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+        // }
+        // else{
+            y1 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
+            x2 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
+        // }
         arcadeDrive(y1, x2);
     }
 
@@ -124,8 +123,8 @@ void tankDrive(int left, int right) {
 //good
 void arcadeDrive(int moveValue, int rotateValue) {
     //mixes the numbers
-    int leftMotorSpeed = moveValue + rotateValue;
-    int rightMotorSpeed = moveValue - rotateValue;
+    int leftMotorSpeed = moveValue - rotateValue;
+    int rightMotorSpeed = moveValue + rotateValue;
     //determines which is higher
     int mx = max(abs(leftMotorSpeed), abs(rightMotorSpeed));
     //scales both sides evenly based on if max > 127
@@ -139,20 +138,6 @@ void arcadeDrive(int moveValue, int rotateValue) {
 /*
 Autonomous Commands
 */
-
-void evenBotWithBeam() {
-    if(!(leftBumpSwitch.get_value() && rightBumpSwitch.get_value())) {
-        rightDrive = 127;
-        leftDrive = 127;
-    }
-    else{
-        if(leftBumpSwitch.get_value()) 
-            rightDrive = 127;
-        if(rightBumpSwitch.get_value()) 
-            leftDrive = 127;
-    }
-
-}
 
 
 
@@ -240,7 +225,6 @@ void killSwitch() {
 	rightDrive.brake();
 	leftWingMotor.brake();
 	rightWingMotor.brake();
-	climb.brake();
 }
 
 void moveTo(double xDist, double yDist, int timeout) {

@@ -46,7 +46,8 @@ void initialize() {
 	pros::lcd::initialize();
 	drivetrainInitialize();
 	wingsInitialize();
-	climberInitialize();
+	armInit();
+	intakeInit();
 	pros::lcd::register_btn1_cb(on_center_button);
 	pros::lcd::register_btn0_cb(on_left_button);
 	pros::lcd::register_btn2_cb(on_right_button);
@@ -82,7 +83,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	moveTo(0, 10, 100000);
+	moveTo(0, 30, 100000);
 }
 
 /**
@@ -111,10 +112,23 @@ void opcontrol() {
 			// climberPeriodic(override);
 			// kickerPeriodic(override);
 
-		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
-			autonomous();
+		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
+			spinIntake(127);
+		} else if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+			spinIntake(-127);
+		} else {
+			spinIntake(0);
 		}
-
+		
+		
+		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+			spinPuncher(127 * .8);
+		}else{
+			spinPuncher(0);
+		}
+		wingsPeriodic(override);
+		armPeriodic(override);
+	
 		
 
 		pros::delay(10);

@@ -30,32 +30,33 @@ MOTORS
 */
         //TODO: figure out gears
 //Drivetrain
-    pros::Motor fRDrive(6, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor mRDrive(8, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor bRDrive(10, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor fRDrive(18, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor mRDrive(19, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor bRDrive(20, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
 
-    pros::Motor fLDrive(5, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor mLDrive(3, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor bLDrive(1, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor fLDrive(11, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor mLDrive(12, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor bLDrive(13, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
 
     pros::Motor_Group leftDrive({fLDrive, mLDrive, bLDrive});
     pros::Motor_Group rightDrive({fRDrive, mRDrive, bRDrive});
 
-    pros::IMU gyro(8);
+    pros::IMU gyro(17);
+
 //Shooter
-    pros::Motor kickerMotor(8, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor puncher1(2, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor puncher2(9, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+
+    pros::Motor_Group puncher({puncher1, puncher2});
 
 //Wings
-    pros::Motor rightWingMotor(9, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor leftWingMotor(10, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor rightWingMotor(15, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor leftWingMotor(16, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
 
-//Climber
-    pros::Motor leftClimbMotor(21, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor rightClimbMotor(20, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_COUNTS);
+//Intake
 
-    pros::Motor_Group climb({leftClimbMotor, rightClimbMotor});
-
-    pros::Motor climbLock(18, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor intake(1, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor arm(10, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
 
     pros::Rotation rotationSensor(9, false);
 

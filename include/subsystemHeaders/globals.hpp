@@ -42,18 +42,17 @@ MOTORS
 
 
     //Shooter
-        extern pros::Motor kickerMotor;
+        extern pros::Motor puncher1;
+        extern pros::Motor puncher2;
+        
+        extern pros::Motor_Group puncher;
 
     //Wings
         extern pros::Motor leftWingMotor;
         extern pros::Motor rightWingMotor;
 
-    //Climber
-        extern pros::Motor leftClimbMotor;
-        extern pros::Motor rightClimbMotor;
-
-        extern pros::Motor_Group climb;
-
-        extern pros::Motor climbLock;
+    //Intake
+        extern pros::Motor intake;
+        extern pros::Motor arm;
 
         extern pros::Rotation rotationSensor;

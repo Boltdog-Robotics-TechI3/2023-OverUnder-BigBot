@@ -3,51 +3,43 @@
 using namespace std;
 
 // bool wingsOut = false;
+bool lWingOut = false;
+bool rWingOut = false;
 
 void wingsInitialize() {
 	leftWingMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightWingMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
+
+	leftWingMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+	rightWingMotor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
 }
 
 void wingsPeriodic(bool override) {
-
-	if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-		// flipLeftWing(300);
-		manualOpenLeftWing();
-	}
-	else if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-		// flipLeftWing(0);
-		manualCloseLeftWing();
-	}
-	else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-		// flipWings(300);
-		manualOpenWings();
-	}
-	else if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-		// flipWings(300);
-		manualCloseWings();
-	}
-	else {
-		stopLeftWing();
-	}
+		if(driverController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)){
+			if(rWingOut){
+				flipRightWing(0, 3000);
+				rWingOut = false;
+			}else{
+				flipRightWing(1400, 3000);
+				rWingOut = true;
+			}
+		}
+		if(driverController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)){
+			if(lWingOut){
+				flipLeftWing(0, 3000);
+				lWingOut = false;
+			}else{
+				flipLeftWing(1400, 3000);
+				lWingOut = true;
+			}
+		}
 	
-	if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-		// flipLeftWing(300);
-		manualOpenRightWing();
-	}
-	else if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-		// flipLeftWing(0);
-		manualCloseRightWing();
-	}
-	else {
-		stopRightWing();
-	}
 
 	// currentLock();
 
-    pros::lcd::set_text(1, "Left Wing Encoder: " + to_string(leftWingMotor.get_position()));
-	pros::lcd::set_text(2, "Right Wing Encoder: " + to_string(leftWingMotor.get_position()));
-	pros::lcd::set_text(4, "Right Wing Current Draw " + to_string(leftWingMotor.get_current_draw()));
+    // pros::lcd::set_text(1, "Left Wing Encoder: " + to_string(leftWingMotor.get_position()));
+	// pros::lcd::set_text(2, "Right Wing Encoder: " + to_string(leftWingMotor.get_position()));
+	// pros::lcd::set_text(4, "Right Wing Current Draw " + to_string(leftWingMotor.get_current_draw()));
 }
 
 // Position-Controlled Wings
@@ -56,12 +48,12 @@ void flipWings(int position, int speed) {
 	flipRightWing(position, speed);
 }
 
-void flipLeftWing(int position, int speed) {
-	leftWingMotor.move_absolute(position, speed);
+void flipLeftWing(int degrees, int speed) {
+	leftWingMotor.move_absolute(degrees, speed);
 }
 
-void flipRightWing(int position, int speed) {
-	rightWingMotor.move_absolute(position, speed);
+void flipRightWing(int degrees, int speed) {
+	rightWingMotor.move_absolute(degrees, speed);
 }
 
 

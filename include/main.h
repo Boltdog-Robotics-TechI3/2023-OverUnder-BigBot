@@ -75,11 +75,13 @@ void opcontrol(void);
 /**
  * You can add C++-only headers here
  */
-#include "subsystemHeaders/Climber.hpp"
 #include "subsystemHeaders/Drivetrain.hpp"
-#include "subsystemHeaders/Kicker.hpp"
-#include "subsystemHeaders/globals.hpp"
+#include "subsystemHeaders/Arm.hpp"
+#include "subsystemHeaders/Intake.hpp"
+#include "subsystemHeaders/Puncher.hpp"
 #include "subsystemHeaders/Wings.hpp"
+
+#include "subsystemHeaders/globals.hpp"
 
 #include "autoHeaders/Autos.hpp"
 
