@@ -25,9 +25,9 @@ lemlib::OdomSensors_t odometry {
 // forward/backward PID
 lemlib::ChassisController_t lateralController {
     16, // kP
-    0, // kD
+    0.5, // kD
     1, // smallErrorRange
-    100, // smallErrorTimeout
+    4000, // smallErrorTimeout
     3, // largeErrorRange
     5000, // largeErrorTimeout
     5 // slew rate
@@ -35,10 +35,10 @@ lemlib::ChassisController_t lateralController {
  
 // turning PID
 lemlib::ChassisController_t angularController {
-    4, // kP
-    40, // kD
+    2, // kP
+    0, // kD
     1, // smallErrorRange
-    100, // smallErrorTimeout
+    4000, // smallErrorTimeout
     3, // largeErrorRange
     5000, // largeErrorTimeout
     0 // slew rate

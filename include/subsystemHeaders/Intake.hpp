@@ -6,4 +6,6 @@ void intakePeriodic(bool override);
 
 void spinIntake(int speed);
 
+void holdIntake();
+
 

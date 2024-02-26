@@ -53,6 +53,10 @@ MOTORS
 
     //Intake
         extern pros::Motor intake;
-        extern pros::Motor arm;
+
+        extern pros::Motor arm1;
+        extern pros::Motor arm2;
+        
+        extern pros::Motor_Group arm;
 
         extern pros::Rotation rotationSensor;

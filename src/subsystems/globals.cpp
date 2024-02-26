@@ -56,7 +56,11 @@ MOTORS
 //Intake
 
     pros::Motor intake(1, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
-    pros::Motor arm(10, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+
+    pros::Motor arm1(10, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
+    pros::Motor arm2(8, pros::E_MOTOR_GEAR_GREEN, true, pros::E_MOTOR_ENCODER_COUNTS);
+
+    pros::Motor_Group arm({arm1, arm2});
 
     pros::Rotation rotationSensor(9, false);
 

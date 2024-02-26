@@ -83,7 +83,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	moveTo(0, 30, 100000);
+	moveTo(-10, 10, 100000);
 }
 
 /**
@@ -114,12 +114,12 @@ void opcontrol() {
 
 		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
 			spinIntake(127);
+			
 		} else if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
-			spinIntake(-127);
+			spinIntake(-70);
 		} else {
-			spinIntake(0);
+			holdIntake();
 		}
-		
 		
 		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
 			spinPuncher(127 * .8);
@@ -128,7 +128,14 @@ void opcontrol() {
 		}
 		wingsPeriodic(override);
 		armPeriodic(override);
-	
+		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_UP)){
+			moveArm(127*.6);
+		}else if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
+			moveArm(-127*.6);
+		}else{
+			moveArm(0);
+		}
+
 		
 
 		pros::delay(10);
