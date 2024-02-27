@@ -58,7 +58,7 @@ lemlib::FAPID turnPID{
     "johnny"//name
 };
 
-okapi::Timer timer;
+// okapi::Timer timer;
 
 
 void drivetrainInitialize() {
@@ -117,7 +117,7 @@ void drivetrainPeriodic(bool override) {
         pros::lcd::print(2, "heading: %f", pose.theta); // print the heading
         pros::delay(10);
 
-    pros::lcd::print(4, "time", timer.millis());
+    // pros::lcd::print(4, "time", timer.millis());
 
 
 
@@ -240,7 +240,7 @@ void rotateToHeadingVoltage(int angle) {
 void rotateToHeadingPID(double angle){
     int motorVal = 0;
     double error = angle - gyro.get_heading();
-    while ( > 1) {
+    while (true) {
         motorVal = turnPID.update(angle, gyro.get_heading(), false);
         leftDrive.move(motorVal);
         rightDrive.move(-motorVal);

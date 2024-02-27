@@ -6,9 +6,9 @@ void wingsPeriodic(bool override);
 
 void flipWings(int position, int speed);
 
-void flipLeftWing(int position, int speed);
+void positionLeftWing(int position, int speed);
 
-void flipRightWing(int position, int speed);
+void positionRightWing(int position, int speed);
 
 void manualOpenWings();
 
