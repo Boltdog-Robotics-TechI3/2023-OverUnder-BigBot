@@ -5,6 +5,16 @@ void intakeInit(){
 }
 
 void intakePeriodic(bool override) {
+  
+		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
+			spinIntake(127);
+			
+		} else if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+			spinIntake(-70);
+		} else {
+			holdIntake();
+		}
+		
 }
 
 void spinIntake(int speed) {

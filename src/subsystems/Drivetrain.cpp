@@ -2,6 +2,8 @@
 #include <iostream>
 using namespace std;
 #include "lemlib/api.hpp"
+#include <okapi/impl/util/timer.hpp>
+
 
 lemlib::TrackingWheel horizontalTW(&rotationSensor, 2.75, 0.0, 2);
 
@@ -46,6 +48,17 @@ lemlib::ChassisController_t angularController {
 
 // create the chassis
 lemlib::Chassis chassis(drivetrain, lateralController, angularController, odometry);
+
+lemlib::FAPID turnPID{
+    0,//ff
+    .05,//aceleration
+    2.25,//p
+    0,//i
+    0.2,//d
+    "johnny"//name
+};
+
+okapi::Timer timer;
 
 
 void drivetrainInitialize() {
@@ -92,6 +105,7 @@ void drivetrainPeriodic(bool override) {
             x2 = (driverController.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X));
         // }
         arcadeDrive(y1, x2);
+
     }
 
     // pros::lcd::set_text(0, "Drivetrain Left Encoder: " + to_string(fLDrive.get_position()));
@@ -102,6 +116,8 @@ void drivetrainPeriodic(bool override) {
         pros::lcd::print(1, "y: %f", pose.y); // print the y position
         pros::lcd::print(2, "heading: %f", pose.theta); // print the heading
         pros::delay(10);
+
+    pros::lcd::print(4, "time", timer.millis());
 
 
 
@@ -218,6 +234,29 @@ void rotateToHeadingVoltage(int angle) {
     leftDrive.move(0);
 	rightDrive.move(0);
 
+}
+
+// 
+void rotateToHeadingPID(double angle){
+    int motorVal = 0;
+    double error = angle - gyro.get_heading();
+    while ( > 1) {
+        motorVal = turnPID.update(angle, gyro.get_heading(), false);
+        leftDrive.move(motorVal);
+        rightDrive.move(-motorVal);
+        // master.set_text(1, 0, to_string(gyro.get_heading()));
+        driverController.set_text(0, 0, to_string(turnPID.settled()));
+        error = angle - gyro.get_heading();
+        if (abs(error) < 2) {
+
+        }
+        else {
+
+        }
+    }  
+    turnPID.reset();
+    leftDrive.move(0);
+    rightDrive.move(0);
 }
 
 void killSwitch() {

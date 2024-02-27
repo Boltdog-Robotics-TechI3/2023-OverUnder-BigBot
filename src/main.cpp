@@ -108,30 +108,14 @@ void opcontrol() {
 			}
 		
 		drivetrainPeriodic(override);
-			// wingsPeriodic(override);
-			// climberPeriodic(override);
-			// kickerPeriodic(override);
-
-		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
-			spinIntake(127);
-			
-		} else if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
-			spinIntake(-70);
-		} else {
-			holdIntake();
-		}
-		
-		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-			spinPuncher(127 * .8);
-		}else{
-			spinPuncher(0);
-		}
+		puncherPeriodic(override);
+		intakePeriodic(override);
 		wingsPeriodic(override);
 		armPeriodic(override);
 
 
 		if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-			autoCycleSequence();
+			rotateToHeadingPID(90);
 		}
 		
 

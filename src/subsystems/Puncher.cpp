@@ -8,12 +8,11 @@ void puncherInit(){
 }
 
 void puncherPeriodic(bool override) {
-  // if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-  //       spinKicker();
-  // }
-  // else {
-  //   stopKicker();
-  // }
+  	if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+			spinPuncher(127 * .8);
+		}else{
+			spinPuncher(0);
+		}
 }
 
 // void stopKicker() {
