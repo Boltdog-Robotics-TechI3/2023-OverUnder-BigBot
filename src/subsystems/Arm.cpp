@@ -11,18 +11,31 @@ void armInit(){
 }
 
 void armPeriodic(bool overide){    
-    // if(driverController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
-    //     if(armHomed){
-	// 	    arm.move_absolute(-850, 30000);
-    //         armHomed = false;
-    //     }else{
-    //         arm.move_absolute(0, 30000);
-    //         armHomed = true;
-    //     }
-    // }
-    pros::lcd::set_text(1, "Arm Encoder: " + to_string(arm1.get_position()));
+    if(driverController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){
+        if(armHomed){
+		    setArmPosition(-750, 30000);
+            armHomed = false;
+        }else{
+            setArmPosition(-120, 30000);
+            armHomed = true;
+        }
+
+    
+    // if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_UP)){
+		// 	moveArm(127*.6);
+		// }else if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
+		// 	moveArm(-127*.6);
+		// }else{
+		// 	moveArm(0);
+		// }
+    }
+    pros::lcd::set_text(3, "Arm Encoder: " + to_string(arm1.get_position()));
 }
 
 void moveArm(int speed){
     arm.move(speed);
+}
+
+void setArmPosition(double position, double speed) {
+    arm.move_absolute(position, speed);
 }

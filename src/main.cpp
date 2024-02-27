@@ -128,14 +128,11 @@ void opcontrol() {
 		}
 		wingsPeriodic(override);
 		armPeriodic(override);
-		if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_UP)){
-			moveArm(127*.6);
-		}else if(driverController.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
-			moveArm(-127*.6);
-		}else{
-			moveArm(0);
-		}
 
+
+		if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+			autoCycleSequence();
+		}
 		
 
 		pros::delay(10);
