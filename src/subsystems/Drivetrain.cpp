@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 #include "lemlib/api.hpp"
-#include <okapi/impl/util/timer.hpp>
+#include "okapi/impl/util/timer.hpp"
 
 
 lemlib::TrackingWheel horizontalTW(&rotationSensor, 2.75, 0.0, 2);
@@ -268,9 +268,7 @@ void killSwitch() {
 
 // Move to pose from lemlib but made relative.
 void moveTo(double xDist, double yDist, int timeout) {
-    lemlib::Pose newPose(0, 0, 0);
-
-    chassis.setPose(newPose, false);
+    chassis.setPose(0, 0, 0);
     double y = chassis.getPose().y + yDist;
     double x = chassis.getPose().x + xDist;
     chassis.moveTo(x, y, timeout);
