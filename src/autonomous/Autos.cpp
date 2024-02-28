@@ -28,8 +28,8 @@ void autoCycleSequence() {
 
 	// intake triball
 	spinIntake(127);
-	setArmPosition(-700, 30000);
-	pros::delay(300);
+	setArmPosition(-720, 30000);
+	pros::delay(500);
 
 	// bring arm up to standing
 	holdIntake();
@@ -40,4 +40,57 @@ void autoCycleSequence() {
 	spinIntake(-50);
 	pros::delay(500);
 	holdIntake();
+}
+
+void shootTriballs(int shots){
+	for(int i = 0; i < shots; i++){
+		autoCycleSequence();
+	}
+}
+
+void skillsJumpBar(){
+	shootTriballs(3);
+	moveTo(0, 52, 3000, 200.0);
+	flipWings();
+	moveTo(0, 20, 1500, 50.0);
+	moveTo(0, -3, 1500, 50.0);
+	moveTo(0, 35, 3000, 200.0);
+	moveTo(0, 27.5, 3000, 200.0);
+	flipWings();
+}
+
+void skillsTrenchRun() {
+	// Human Player Cycles
+	shootTriballs(1);
+
+	// Back out and head to trench
+	moveTo(0, 5, 1000, 200);
+	rotateToHeadingPID(72);
+	moveTo(0, 23, 2000, 200);
+
+	// turn towards and drive through trench
+	setArmPosition(-720, 30000);
+	rotateToHeadingPID(-32);
+	moveTo(0, 60, 3000, 200);
+	setArmPosition(-30, 30000);
+
+	// Turn and drive along enemy human player pole
+	rotateToHeadingPID(-32);
+	moveTo(0, 22, 2000, 200);
+	rotateToHeadingPID(-48);
+
+	// Smash into right side of goal
+	flipLeftWing();
+	flipRightWing();
+	moveTo(0, 12, 1000, 9999990);
+	moveTo(0, -12, 1000, 999990);
+	moveTo(0, 12, 1000, 999990);
+	moveTo(0, -12, 1000, 999990);
+	flipLeftWing();
+	flipRightWing();
+
+	// Travel To Mid
+	rotateToHeadingPID(-80);
+	moveTo(0, 30, 1000, 200);
+
 }

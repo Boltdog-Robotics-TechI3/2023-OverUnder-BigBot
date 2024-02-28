@@ -6,3 +6,7 @@ void skillsAuto();
 
 void autoCycleSequence();
 
+void shootTriballs(int shots);
+
+void skillsTrenchRun();
+

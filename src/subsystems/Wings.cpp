@@ -6,8 +6,7 @@ using namespace std;
 bool lWingOut = false;
 bool rWingOut = false;
 
-void wingsInitialize()
-{
+void wingsInitialize(){
 	leftWingMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 	rightWingMotor.set_brake_mode(MOTOR_BRAKE_BRAKE);
 
@@ -19,11 +18,11 @@ void wingsPeriodic(bool override)
 {
 	if (driverController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))
 	{
-		flipLeftWing();
+		flipRightWing();
 	}
 	if (driverController.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1))
 	{
-		flipRightWing();
+		flipLeftWing();
 	}
 
 	// currentLock();
@@ -34,10 +33,9 @@ void wingsPeriodic(bool override)
 }
 
 // Position-Controlled Wings
-void flipWings(int position, int speed)
-{
-	positionLeftWing(position, speed);
-	positionRightWing(position, speed);
+void flipWings(){
+	flipLeftWing();
+	flipRightWing();
 }
 
 void positionLeftWing(int degrees, int speed)

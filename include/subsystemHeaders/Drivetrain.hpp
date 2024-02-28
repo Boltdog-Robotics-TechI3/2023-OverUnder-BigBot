@@ -20,6 +20,10 @@ void rotateToHeadingVoltage(int angle);
 
 void rotateToHeadingPID(double angle);
 
+void rotateToHeadingPIDAbsolute(double angle);
+
 void killSwitch();
 
-void moveTo(double xDist, double yDist, int timeout);
+void moveTo(double xDist, double yDist, int timeout, float maxSpeed);
+
+double desiredAngle(int angle);

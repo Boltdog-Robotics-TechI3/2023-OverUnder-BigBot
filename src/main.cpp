@@ -83,7 +83,9 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	moveTo(-10, 10, 100000);
+	// skillsTrenchRun();
+	rotateToHeadingPIDAbsolute(90);
+
 }
 
 /**
@@ -115,7 +117,7 @@ void opcontrol() {
 
 
 		if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-			rotateToHeadingPID(90);
+			autonomous();
 
 		}
 		

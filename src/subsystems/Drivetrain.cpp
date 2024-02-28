@@ -26,10 +26,10 @@ lemlib::OdomSensors_t odometry {
 
 // forward/backward PID
 lemlib::ChassisController_t lateralController {
-    16, // kP
+    25, // kP
     0.5, // kD
-    1, // smallErrorRange
-    4000, // smallErrorTimeout
+    .5, // smallErrorRange
+    100, // smallErrorTimeout
     3, // largeErrorRange
     5000, // largeErrorTimeout
     5 // slew rate
@@ -52,13 +52,13 @@ lemlib::Chassis chassis(drivetrain, lateralController, angularController, odomet
 lemlib::FAPID turnPID{
     0,//ff
     .05,//aceleration
-    2.25,//p
-    0,//i
-    0.2,//d
+    4,//p
+    0.0,//i
+    0.3,//d
     "johnny"//name
 };
 
-// okapi::Timer timer;
+okapi::Timer timer;
 
 
 void drivetrainInitialize() {
@@ -114,10 +114,11 @@ void drivetrainPeriodic(bool override) {
         lemlib::Pose pose = chassis.getPose(); // get the current position of the robot
         pros::lcd::print(0, "x: %f", pose.x); // print the x position
         pros::lcd::print(1, "y: %f", pose.y); // print the y position
-        pros::lcd::print(2, "heading: %f", pose.theta); // print the heading
+        pros::lcd::print(2, "heading: %f", gyro.get_heading()); // print the heading
         pros::delay(10);
 
-    // pros::lcd::print(4, "time", timer.millis());
+ 
+    pros::lcd::set_text(5, "time" + to_string(timer.getDtFromStart().getValue()));
 
 
 
@@ -238,25 +239,73 @@ void rotateToHeadingVoltage(int angle) {
 
 // Auto Rotate to angle using the gyro and lemlib's FAPID class for output calculation (USE THIS ONE FOR AUTO).
 void rotateToHeadingPID(double angle){
+    double startTime = timer.getDtFromStart().getValue();
+    double errorTimer = timer.getDtFromStart().getValue();
+    gyro.set_heading(180);
+    
+    double desAngle = angle + 180;
+    double error = desAngle - gyro.get_heading();
+
     int motorVal = 0;
+
+    while ((timer.getDtFromStart().getValue() - errorTimer < 1) && (timer.getDtFromStart().getValue() - startTime < 3)) {
+
+        motorVal = turnPID.update(desAngle, gyro.get_heading(), false);
+        
+        leftDrive.move(-motorVal);
+        rightDrive.move(motorVal);
+  
+        error = desAngle - gyro.get_heading();
+
+        if (abs(error) > 2) {
+            errorTimer = timer.getDtFromStart().getValue();
+        }
+
+    }  
+    turnPID.reset();
+    leftDrive.move(0);
+    rightDrive.move(0);
+}
+
+// Uses same methods as previous, but it uses absolute angles. (if you plan on using this one, DO NOT USE THE OTHER ONE)
+void rotateToHeadingPIDAbsolute(double angle) {
+    double startTime = timer.getDtFromStart().getValue();
+    double errorTimer = timer.getDtFromStart().getValue();
+    
     double error = angle - gyro.get_heading();
-<<<<<<< HEAD
-    while (true) {
-=======
-    while (timer.getDtFromMark().getValue() < 1000) {
->>>>>>> dbecd48c68b5078819ea9c84da5e40d712b0f604
-        motorVal = turnPID.update(angle, gyro.get_heading(), false);
-        leftDrive.move(motorVal);
-        rightDrive.move(-motorVal);
-        // master.set_text(1, 0, to_string(gyro.get_heading()));
-        driverController.set_text(0, 0, to_string(turnPID.settled()));
-        error = angle - gyro.get_heading();
-        if (abs(error) < 2) {
-            timer.placeMark();
+
+    double desAngle = angle;
+    double heading = gyro.get_heading();
+    bool isHeadingAdjusted = false;
+
+    if (abs(error) > 180) {
+        if (angle < 180) {
+            desAngle += 360;
         }
         else {
-            timer.clearMark();
+            isHeadingAdjusted = true;
         }
+    }
+
+    int motorVal = 0;
+
+    while ((timer.getDtFromStart().getValue() - errorTimer < 1) && (timer.getDtFromStart().getValue() - startTime < 3)) {
+        heading = gyro.get_heading();
+        if (isHeadingAdjusted && gyro.get_heading() < 180) {
+            heading += 360;
+        }
+
+        motorVal = turnPID.update(desAngle, heading, false);
+        
+        leftDrive.move(-motorVal);
+        rightDrive.move(motorVal);
+  
+        error = desAngle - heading;
+
+        if (abs(error) > 2) {
+            errorTimer = timer.getDtFromStart().getValue();
+        }
+
     }  
     turnPID.reset();
     leftDrive.move(0);
@@ -270,12 +319,38 @@ void killSwitch() {
 	rightWingMotor.brake();
 }
 
+double desiredAngle(int angle) {
+ double CheckL;
+ 
+ if(angle > gyro.get_heading()) {
+   CheckL = abs(angle - gyro.get_heading());
+  } else{
+   CheckL = (360-gyro.get_heading())+angle;
+  }
+ 
+ double CheckR;
+
+  if(angle > gyro.get_heading()) {
+   CheckR = (360-angle)+gyro.get_heading();
+  } else{
+   CheckR = (gyro.get_heading() - angle);
+  }
+
+  double Heading;
+  if(CheckL > abs(CheckR)) {
+   Heading = CheckR;
+    } else {
+   Heading = -CheckL;
+    }
+  return Heading;
+}
+
 // Move to pose from lemlib but made relative.
-void moveTo(double xDist, double yDist, int timeout) {
+void moveTo(double xDist, double yDist, int timeout, float maxSpeed) {
     chassis.setPose(0, 0, 0);
     double y = chassis.getPose().y + yDist;
     double x = chassis.getPose().x + xDist;
-    chassis.moveTo(x, y, timeout);
+    chassis.moveTo(x, y, timeout, maxSpeed);
 }
 
 
