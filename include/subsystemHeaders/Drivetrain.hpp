@@ -24,6 +24,6 @@ void rotateToHeadingPIDAbsolute(double angle);
 
 void killSwitch();
 
-void moveTo(double xDist, double yDist, int timeout, float maxSpeed);
+void setHeading(double angle);
 
-double desiredAngle(int angle);
+void moveTo(double xDist, double yDist, int timeout, float maxSpeed);

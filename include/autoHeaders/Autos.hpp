@@ -10,3 +10,5 @@ void shootTriballs(int shots);
 
 void skillsTrenchRun();
 
+void skillsJumpBar();
+

@@ -281,6 +281,7 @@ void rotateToHeadingPIDAbsolute(double angle) {
     if (abs(error) > 180) {
         if (angle < 180) {
             desAngle += 360;
+            isHeadingAdjusted = true;
         }
         else {
             isHeadingAdjusted = true;
@@ -289,7 +290,7 @@ void rotateToHeadingPIDAbsolute(double angle) {
 
     int motorVal = 0;
 
-    while ((timer.getDtFromStart().getValue() - errorTimer < 1) && (timer.getDtFromStart().getValue() - startTime < 3)) {
+    while ((timer.getDtFromStart().getValue() - errorTimer < 0.5) && (timer.getDtFromStart().getValue() - startTime < 3)) {
         heading = gyro.get_heading();
         if (isHeadingAdjusted && gyro.get_heading() < 180) {
             heading += 360;
@@ -319,38 +320,19 @@ void killSwitch() {
 	rightWingMotor.brake();
 }
 
-double desiredAngle(int angle) {
- double CheckL;
- 
- if(angle > gyro.get_heading()) {
-   CheckL = abs(angle - gyro.get_heading());
-  } else{
-   CheckL = (360-gyro.get_heading())+angle;
-  }
- 
- double CheckR;
-
-  if(angle > gyro.get_heading()) {
-   CheckR = (360-angle)+gyro.get_heading();
-  } else{
-   CheckR = (gyro.get_heading() - angle);
-  }
-
-  double Heading;
-  if(CheckL > abs(CheckR)) {
-   Heading = CheckR;
-    } else {
-   Heading = -CheckL;
-    }
-  return Heading;
+// sets the heading value of the gyro to the specified angle
+void setHeading(double angle) {
+    gyro.set_heading(angle);
 }
 
-// Move to pose from lemlib but made relative.
+// Move to pose from lemlib but made relative. (ITS ALSO INCONSISTENT DAMNIT)
 void moveTo(double xDist, double yDist, int timeout, float maxSpeed) {
+    double temp = gyro.get_heading();
+    gyro.set_heading(0);
     chassis.setPose(0, 0, 0);
-    double y = chassis.getPose().y + yDist;
-    double x = chassis.getPose().x + xDist;
-    chassis.moveTo(x, y, timeout, maxSpeed);
+    pros::delay(100);
+    chassis.moveTo(xDist, yDist, timeout, maxSpeed);
+    gyro.set_heading(temp);
 }
 
 

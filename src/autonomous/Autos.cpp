@@ -19,7 +19,7 @@ void skillsAuto() {
 
 void autoCycleSequence() {
 	// move arm down to make room for the puncher and to prepare to grab next triball
-	setArmPosition(-750, 30000);
+	setArmPosition(-770, 30000);
 
 	// punch that bitch
 	spinPuncher(100);
@@ -28,7 +28,6 @@ void autoCycleSequence() {
 
 	// intake triball
 	spinIntake(127);
-	setArmPosition(-720, 30000);
 	pros::delay(500);
 
 	// bring arm up to standing
@@ -37,9 +36,12 @@ void autoCycleSequence() {
 	pros::delay(500);
 
 	// drop triball into puncher
-	spinIntake(-50);
-	pros::delay(500);
+	spinIntake(-80);
+	pros::delay(700);
 	holdIntake();
+
+	// push a bit against bar
+	driveStraightDistance(-20, 50);
 }
 
 void shootTriballs(int shots){
@@ -49,19 +51,57 @@ void shootTriballs(int shots){
 }
 
 void skillsJumpBar(){
+	// Cycle Triballs
 	shootTriballs(3);
-	moveTo(0, 52, 3000, 200.0);
+
+	setArmPosition(-770, 30000);
+	spinPuncher(100);
+	pros::delay(700);
+	spinPuncher(0);
+	setArmPosition(-30, 30000);
+
+	// reset gyro to be the correct angle (plz work)
+	setHeading(0);
+
+	// Drive To bar
+	moveTo(0, 42, 3000, 200.0);
+	pros::delay(300);
+
+	// Move ball out of the way
 	flipWings();
-	moveTo(0, 20, 1500, 50.0);
-	moveTo(0, -3, 1500, 50.0);
-	moveTo(0, 35, 3000, 200.0);
-	moveTo(0, 27.5, 3000, 200.0);
+	rotateToHeadingPIDAbsolute(70);
 	flipWings();
-}
+
+	// Jump bar
+	rotateToHeadingPIDAbsolute(315);
+	pros::delay(200);
+	moveTo(0, 50, 3000, 200.0);
+	moveTo(0, -30, 3000, 100.0);
+
+	// First set of Smashing
+	flipWings();
+	moveTo(0, 25, 3000, 200.0);
+	moveTo(0, -15, 3000, 200.0);
+	moveTo(0, 20, 3000, 200.0);
+	moveTo(0, -20, 3000, 200.0);
+
+	// move to right side of middle goal
+	rotateToHeadingPIDAbsolute(45);
+	flipLeftWing();
+	moveTo(0, 20, 3000, 200.0);
+	rotateToHeadingPIDAbsolute(315);
+
+	// Second Set of Smashing
+	flipLeftWing();
+	moveTo(0, 25, 3000, 200.0);
+	moveTo(0, -10, 3000, 200.0);
+	moveTo(0, 10, 3000, 200.0);
+	moveTo(0, -20, 3000, 200.0);
+}	
 
 void skillsTrenchRun() {
 	// Human Player Cycles
-	shootTriballs(1);
+	shootTriballs(16);
 
 	// Back out and head to trench
 	moveTo(0, 5, 1000, 200);

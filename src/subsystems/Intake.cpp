@@ -1,4 +1,6 @@
 #include "main.h"
+#include <iostream>
+using namespace std;
 
 void intakeInit(){
     intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -15,6 +17,8 @@ void intakePeriodic(bool override) {
 			holdIntake();
 		}
 		
+		pros::lcd::set_text(4, "intake current" + to_string(intake.get_current_draw()));
+
 }
 
 void spinIntake(int speed) {

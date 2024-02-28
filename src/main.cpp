@@ -83,8 +83,7 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	// skillsTrenchRun();
-	rotateToHeadingPIDAbsolute(90);
+	skillsJumpBar();
 
 }
 
