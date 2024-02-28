@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 #include "lemlib/api.hpp"
-#include <okapi/impl/util/timer.hpp>
+#include "okapi/impl/util/timer.hpp"
 
 
 lemlib::TrackingWheel horizontalTW(&rotationSensor, 2.75, 0.0, 2);
@@ -236,11 +236,15 @@ void rotateToHeadingVoltage(int angle) {
 
 }
 
-// 
+// Auto Rotate to angle using the gyro and lemlib's FAPID class for output calculation (USE THIS ONE FOR AUTO).
 void rotateToHeadingPID(double angle){
     int motorVal = 0;
     double error = angle - gyro.get_heading();
+<<<<<<< HEAD
     while (true) {
+=======
+    while (timer.getDtFromMark().getValue() < 1000) {
+>>>>>>> dbecd48c68b5078819ea9c84da5e40d712b0f604
         motorVal = turnPID.update(angle, gyro.get_heading(), false);
         leftDrive.move(motorVal);
         rightDrive.move(-motorVal);
@@ -248,10 +252,10 @@ void rotateToHeadingPID(double angle){
         driverController.set_text(0, 0, to_string(turnPID.settled()));
         error = angle - gyro.get_heading();
         if (abs(error) < 2) {
-
+            timer.placeMark();
         }
         else {
-
+            timer.clearMark();
         }
     }  
     turnPID.reset();
@@ -266,7 +270,9 @@ void killSwitch() {
 	rightWingMotor.brake();
 }
 
+// Move to pose from lemlib but made relative.
 void moveTo(double xDist, double yDist, int timeout) {
+    chassis.setPose(0, 0, 0);
     double y = chassis.getPose().y + yDist;
     double x = chassis.getPose().x + xDist;
     chassis.moveTo(x, y, timeout);
