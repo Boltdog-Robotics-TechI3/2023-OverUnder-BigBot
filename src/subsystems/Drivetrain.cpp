@@ -335,5 +335,8 @@ void moveTo(double xDist, double yDist, int timeout, float maxSpeed) {
     gyro.set_heading(temp);
 }
 
+void moveToPose(){
+    chassis.moveTo(40, 40, 10000);
+}
 
 

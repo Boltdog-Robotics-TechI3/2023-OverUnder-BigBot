@@ -45,12 +45,12 @@ void on_right_button() {
 void initialize() {
 	pros::lcd::initialize();
 	drivetrainInitialize();
-	wingsInitialize();
-	armInit();
-	intakeInit();
+	// wingsInitialize();
+	// armInit();
+	// intakeInit();
 	pros::lcd::register_btn1_cb(on_center_button);
-	pros::lcd::register_btn0_cb(on_left_button);
-	pros::lcd::register_btn2_cb(on_right_button);
+	// pros::lcd::register_btn0_cb(on_left_button);
+	// pros::lcd::register_btn2_cb(on_right_button);
 }
 
 /**
@@ -83,8 +83,8 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	skillsJumpBar();
-
+	setHeading(0);
+	moveTo(0, 42, 3000, 200.0);
 }
 
 /**
@@ -109,10 +109,10 @@ void opcontrol() {
 			}
 		
 		drivetrainPeriodic(override);
-		puncherPeriodic(override);
-		intakePeriodic(override);
-		wingsPeriodic(override);
-		armPeriodic(override);
+		// puncherPeriodic(override);
+		// intakePeriodic(override);
+		// wingsPeriodic(override);
+		// armPeriodic(override);
 
 
 		if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {

@@ -41,7 +41,7 @@ MOTORS
     pros::Motor_Group leftDrive({fLDrive, mLDrive, bLDrive});
     pros::Motor_Group rightDrive({fRDrive, mRDrive, bRDrive});
 
-    pros::IMU gyro(17);
+    pros::IMU gyro(6);
 
 //Shooter
     pros::Motor puncher1(2, pros::E_MOTOR_GEAR_GREEN, false, pros::E_MOTOR_ENCODER_COUNTS);
