@@ -27,3 +27,9 @@ void killSwitch();
 void setHeading(double angle);
 
 void moveTo(double xDist, double yDist, int timeout, float maxSpeed);
+
+void chassisMoveTo(float x, float y, int timeout, float maxSpeed = (200.0F), bool log = false);
+
+void chassisTurnTo(float x, float y, int timeout, bool reversed = false, float maxSpeed = (200.0F), bool log = false);
+
+void setChassisPose(double x, double y, double angle, bool radians = false);

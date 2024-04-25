@@ -83,8 +83,11 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	setHeading(0);
-	moveTo(0, 42, 3000, 200.0);
+	setChassisPose(0,0,0);
+	// chassisMoveTo(0, 40, 5000);
+	// chassisMoveTo(0, -40, 5000);
+	// chassisMoveTo(0, 40, 5000);
+	chassisTurnTo(20, 20, 100000, true);
 }
 
 /**
@@ -114,10 +117,8 @@ void opcontrol() {
 		// wingsPeriodic(override);
 		// armPeriodic(override);
 
-
 		if (driverController.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
 			autonomous();
-
 		}
 		
 

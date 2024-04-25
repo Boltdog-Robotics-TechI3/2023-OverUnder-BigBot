@@ -37,13 +37,13 @@ lemlib::ChassisController_t lateralController {
  
 // turning PID
 lemlib::ChassisController_t angularController {
-    2, // kP
-    0, // kD
+    4, // kP
+    40, // kD
     1, // smallErrorRange
-    4000, // smallErrorTimeout
+    100, // smallErrorTimeout
     3, // largeErrorRange
-    5000, // largeErrorTimeout
-    0 // slew rate
+    500, // largeErrorTimeout
+    40 // slew rate
 };
 
 // create the chassis
@@ -82,6 +82,8 @@ void drivetrainPeriodic(bool override) {
     // if(abs(x2) < 10) 
     //     x2 = 0;
 
+    driverController.set_text(0, 0, to_string(chassis.getPose().x) + "," + to_string(chassis.getPose().y));
+
     if (override) {
         if (coachController.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
             //get joysticks for arcade
@@ -115,6 +117,7 @@ void drivetrainPeriodic(bool override) {
         pros::lcd::print(0, "x: %f", pose.x); // print the x position
         pros::lcd::print(1, "y: %f", pose.y); // print the y position
         pros::lcd::print(2, "heading: %f", gyro.get_heading()); // print the heading
+        pros::lcd::print(3, "theta: %f", pose.theta);
         pros::delay(10);
 
  
@@ -325,18 +328,30 @@ void setHeading(double angle) {
     gyro.set_heading(angle);
 }
 
+
 // Move to pose from lemlib but made relative. (ITS ALSO INCONSISTENT DAMNIT)
-void moveTo(double xDist, double yDist, int timeout, float maxSpeed) {
-    double temp = gyro.get_heading();
-    gyro.set_heading(0);
-    chassis.setPose(0, 0, 0);
-    pros::delay(100);
-    chassis.moveTo(xDist, yDist, timeout, maxSpeed);
-    gyro.set_heading(temp);
+// void moveTo(double xDist, double yDist, int timeout, float maxSpeed) {
+//     double temp = gyro.get_heading();
+//     gyro.set_heading(0);
+//     chassis.setPose(0, 0, 0);
+//     pros::delay(100);
+//     chassis.moveTo(xDist, yDist, timeout, maxSpeed);
+//     gyro.set_heading(temp);
+// }
+
+void chassisMoveTo(float x, float y, int timeout, float maxSpeed, bool log){
+    chassis.moveTo(x, y, timeout, maxSpeed, log);
 }
 
-void moveToPose(){
-    chassis.moveTo(40, 40, 10000);
+void chassisTurnTo(float x, float y, int timeout, bool reversed, float maxSpeed, bool logs){
+    chassis.turnTo(x, y, timeout, reversed, maxSpeed, logs);
 }
 
+void setChassisPose(double x, double y, double angle, bool radians){
+    chassis.setPose(x, y, angle, radians);
+}
+
+// lemlib::Pose getChassisPose(){
+//     return chassis.getPose();
+// }
 
